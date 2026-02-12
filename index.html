@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Super Mario World Web Emulator</title>
+    <style>
+        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #000; }
+        #game-container { width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; }
+        #game { width: 640px; height: 480px; max-width: 100%; }
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        <div id="game"></div>
+    </div>
+
+    <script>
+        // Emulator configuration
+        window.EJS_player = '#game';      // The ID of the div where the game will load
+        window.EJS_core = 'snes';         // Specifies the SNES core
+        window.EJS_gameUrl = 'supermarioworldpatched.smc'; // Replace with the actual URL to your SMW ROM
+        window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/'; // Remote data path
+    </script>
+
+    <!-- The EmulatorJS loader script -->
+    <script src="https://cdn.emulatorjs.org/stable/data/loader.js"></script>
+
+</body>
+</html>
