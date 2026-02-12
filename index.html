@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>11le0 Arcade</title>
+    <title>retro game test</title>
     <style>
         body, html { margin: 0; padding: 0; height: 100%; background: #000; color: #fff; font-family: sans-serif; display: flex; overflow: hidden; }
         #sidebar { width: 250px; background: #111; border-right: 1px solid #333; padding: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 20; }
@@ -18,7 +18,7 @@
 
     <div id="sidebar">
         <h2>SELECT GAME</h2>
-        <!-- Using relative paths for GitHub Pages -->
+        <!-- Relative links: Vercel will look in the same folder as this HTML file -->
         <a class="game-btn" href="?core=snes&rom=supermarioworld.smc">Super Mario World (SNES)</a>
         <a class="game-btn" href="?core=gba&rom=supermariobros.gba">Super Mario Bros (GBA)</a>
     </div>
@@ -30,20 +30,19 @@
 
     <script>
         const params = new URLSearchParams(window.location.search);
-        const romName = params.get('rom');
+        const romFile = params.get('rom');
         const coreType = params.get('core');
 
-        if (romName && coreType) {
+        if (romFile && coreType) {
             window.EJS_player = '#game';
             window.EJS_core = coreType;
-            // This pulls the ROM from your own website's folder
-            window.EJS_gameUrl = romName; 
+            window.EJS_gameUrl = romFile; // Vercel serves this from your root
             window.EJS_pathtodata = 'https://cdn.emulatorjs.org';
         }
 
         document.getElementById('overlay').addEventListener('click', function() {
-            if (!romName) {
-                alert('Pick a game first!');
+            if (!romFile) {
+                alert('Please select a game first!');
                 return;
             }
             this.style.display = 'none';
