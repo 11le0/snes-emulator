@@ -18,9 +18,9 @@
 
     <div id="sidebar">
         <h2>SELECT GAME</h2>
-        <!-- Note: Ensure these .smc and .nes files exist in your folder -->
-        <a class="game-btn" href="?core=snes&rom=supermarioworld.smc">Super Mario World (SNES)</a>
-        <a class="game-btn" href="?core=nes&rom=supermariobros.nes">Super Mario Bros (NES)</a>
+        <!-- REPLACE YOUR_USERNAME AND YOUR_REPO BELOW -->
+        <a class="game-btn" href="?core=snes&rom=https://raw.githubusercontent.com">Super Mario World (SNES)</a>
+        <a class="game-btn" href="?core=gba&rom=https://raw.githubusercontent.com">Super Mario Bros (GBA)</a>
     </div>
 
     <div id="game-container">
@@ -30,27 +30,30 @@
 
     <script>
         const params = new URLSearchParams(window.location.search);
-        
-        // Configuration
-        window.EJS_player = '#game';
-        window.EJS_core = params.get('core') || 'snes';
-        window.EJS_gameUrl = params.get('rom') || ''; // The emulator will wait for this
-        window.EJS_pathtodata = 'https://cdn.emulatorjs.org';
+        const romUrl = params.get('rom');
+        const coreType = params.get('core');
+
+        if (romUrl && coreType) {
+            window.EJS_player = '#game';
+            window.EJS_core = coreType;
+            window.EJS_gameUrl = romUrl;
+            window.EJS_pathtodata = 'https://cdn.emulatorjs.org';
+        }
 
         document.getElementById('overlay').addEventListener('click', function() {
+            if (!romUrl) {
+                alert('Please select a game first!');
+                return;
+            }
             this.style.display = 'none';
-            // Start the emulator if a ROM is provided
-            if (typeof EJS_load === 'function' && window.EJS_gameUrl !== '') {
+            if (typeof EJS_load === 'function') {
                 EJS_load();
-            } else if (window.EJS_gameUrl === '') {
-                alert('Please select a game from the sidebar first!');
-                this.style.display = 'flex';
             }
         });
     </script>
 
-    <!-- Corrected Loader Path -->
     <script src="https://cdn.emulatorjs.org"></script>
 
 </body>
 </html>
+
