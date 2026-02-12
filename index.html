@@ -2,23 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Retro Arcade</title>
+    <title>11le0 Retro Arcade</title>
     <style>
         body, html { margin: 0; padding: 0; height: 100%; background: #000; color: #fff; font-family: sans-serif; display: flex; overflow: hidden; }
         #sidebar { width: 250px; background: #111; border-right: 1px solid #333; padding: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 20; }
-        #sidebar h2 { font-size: 18px; color: #ff4444; margin-bottom: 20px; }
+        #sidebar h2 { font-size: 18px; color: #ff4444; margin-bottom: 20px; text-transform: uppercase; }
         .game-btn { background: #222; border: 1px solid #444; color: #fff; padding: 12px; text-align: left; cursor: pointer; transition: 0.3s; border-radius: 4px; text-decoration: none; font-size: 14px; }
         .game-btn:hover { background: #ff4444; border-color: #ff4444; }
         #game-container { flex-grow: 1; display: flex; justify-content: center; align-items: center; position: relative; }
         #game { width: 100%; height: 100%; }
-        #overlay { position: absolute; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 10; }
+        #overlay { position: absolute; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 10; }
+        #overlay h1 { border: 4px solid #fff; padding: 20px; transition: 0.3s; }
+        #overlay:hover h1 { color: #ff4444; border-color: #ff4444; }
     </style>
 </head>
 <body>
 
     <div id="sidebar">
-        <h2>SELECT GAME</h2>
-        <!-- REPLACE YOUR_USERNAME AND YOUR_REPO BELOW -->
+        <h2>Select Game</h2>
+        <!-- Links pointing to your GitHub Raw files -->
         <a class="game-btn" href="?core=snes&rom=https://raw.githubusercontent.com">Super Mario World (SNES)</a>
         <a class="game-btn" href="?core=gba&rom=https://raw.githubusercontent.com">Super Mario Bros (GBA)</a>
     </div>
@@ -37,23 +39,25 @@
             window.EJS_player = '#game';
             window.EJS_core = coreType;
             window.EJS_gameUrl = romUrl;
+            // Stable data path for EmulatorJS
             window.EJS_pathtodata = 'https://cdn.emulatorjs.org';
         }
 
         document.getElementById('overlay').addEventListener('click', function() {
             if (!romUrl) {
-                alert('Please select a game first!');
+                alert('Please select a game from the sidebar first!');
                 return;
             }
             this.style.display = 'none';
+            // Start the EmulatorJS loader
             if (typeof EJS_load === 'function') {
                 EJS_load();
             }
         });
     </script>
 
+    <!-- Essential Loader Script -->
     <script src="https://cdn.emulatorjs.org"></script>
 
 </body>
 </html>
-
