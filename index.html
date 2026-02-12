@@ -2,29 +2,59 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Super Mario World Web Emulator</title>
+    <title>Retro Arcade</title>
     <style>
-        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #000; }
-        #game-container { width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; }
-        #game { width: 640px; height: 480px; max-width: 100%; }
+        body, html { margin: 0; padding: 0; height: 100%; background: #000; color: #fff; font-family: sans-serif; display: flex; overflow: hidden; }
+        
+        /* Sidebar Menu */
+        #sidebar { width: 250px; background: #111; border-right: 1px solid #333; padding: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 20; }
+        #sidebar h2 { font-size: 18px; color: #ff4444; margin-bottom: 20px; }
+        .game-btn { background: #222; border: 1px solid #444; color: #fff; padding: 12px; text-align: left; cursor: pointer; transition: 0.3s; border-radius: 4px; text-decoration: none; font-size: 14px; }
+        .game-btn:hover { background: #ff4444; border-color: #ff4444; }
+
+        /* Game Area */
+        #game-container { flex-grow: 1; display: flex; justify-content: center; align-items: center; position: relative; }
+        #game { width: 100%; height: 100%; }
+
+        /* Fullscreen Overlay */
+        #overlay { position: absolute; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 10; }
     </style>
 </head>
 <body>
 
+    <div id="sidebar">
+        <h2>SELECT GAME</h2>
+        <!-- To add more games, just copy these links and change the core and rom -->
+        <a class="game-btn" href="?core=snes&rom=supermarioworld.smc">Super Mario World (SNES)</a>
+        <a class="game-btn" href="?core=nes&rom=mario1.nes">Super Mario Bros (NES)</a>
+        
+    </div>
+
     <div id="game-container">
+        <div id="overlay"><h1>CLICK TO START</h1></div>
         <div id="game"></div>
     </div>
 
     <script>
-        // Emulator configuration
-        window.EJS_player = '#game';      // The ID of the div where the game will load
-        window.EJS_core = 'snes';         // Specifies the SNES core
-        window.EJS_gameUrl = 'supermarioworldpatched.smc'; // Replace with the actual URL to your SMW ROM
-        window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/'; // Remote data path
+        // 1. Get Game info from the URL (?core=snes&rom=file.smc)
+        const params = new URLSearchParams(window.location.search);
+        const selectedCore = params.get('core') || 'snes'; // Default to snes
+        const selectedRom = params.get('rom') || 'smw.smc'; // Default rom
+
+        // 2. Emulator Configuration
+        window.EJS_player = '#game';
+        window.EJS_core = selectedCore;
+        window.EJS_gameUrl = selectedRom; 
+        window.EJS_pathtodata = 'https://cdn.emulatorjs.org';
+
+        // 3. Handle Fullscreen & Start
+        document.getElementById('overlay').addEventListener('click', function() {
+            document.documentElement.requestFullscreen();
+            this.style.display = 'none';
+        });
     </script>
 
-    <!-- The EmulatorJS loader script -->
-    <script src="https://cdn.emulatorjs.org/stable/data/loader.js"></script>
+    <script src="https://cdn.emulatorjs.orgloader.js"></script>
 
 </body>
 </html>
